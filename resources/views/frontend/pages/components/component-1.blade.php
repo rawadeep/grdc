@@ -1,0 +1,134 @@
+<x-layouts.frontend>
+    <main>
+        @if ($page)
+        <section class="section">
+            <div class="container">
+                <div class="component-overview">
+                    <h2>{{ get_phrase('Component') }} {{ get_phrase('1') }}: {{ $page->title }}</h2>
+                    {!! $page->content !!}
+                </div>
+
+                <!-- Outcome and Outputs Table -->
+                <div class="section">
+                    <h2 class="section-title">{{ get_phrase('Project Framework') }} - {{ get_phrase('Component') }} {{
+                        get_phrase('1') }}
+                    </h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                        <thead>
+                            <tr style="background-color: var(--primary-color); color: white;">
+                                <th style="padding: 1rem; text-align: left;">{{ get_phrase('Project Components') }} / {{
+                                    get_phrase('Programs') }}</th>
+                                <th style="padding: 1rem; text-align: left;">{{ get_phrase('Project Outcomes') }}</th>
+                                <th style="padding: 1rem; text-align: left;">{{ get_phrase('Project Outputs') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 1rem;">
+                                    <strong>{{ get_phrase('Component') }} {{ get_phrase('1') }}:</strong>
+                                    {{ $page->project_framework_description }}
+                                </td>
+                                <td style="padding: 1rem;">
+                                    @foreach ($page->outcomes as $k => $item)
+                                    @if( $item )
+                                    <strong>{{ get_phrase('Outcome') }} {{ get_phrase('1') }}.{{ get_phrase($k+1)
+                                        }}:</strong>
+                                    {{ $item }}<br /><br />
+                                    @endif
+                                    @endforeach
+                                </td>
+                                <td style="padding: 1rem;">
+                                    @foreach ($page->outputs as $k => $item)
+                                    @if( $item )
+                                    <strong>{{ get_phrase('Output') }} {{ get_phrase('1') }}.{{ get_phrase('1') }}.{{
+                                        get_phrase($k+1) }}:</strong>
+                                    {{ $item }}<br /><br />
+                                    @endif
+                                    @endforeach
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        @else
+        <!-- Component Details Section -->
+        <section class="section">
+            <div class="container">
+                <div class="component-overview">
+                    <h2>Component 1: Enabling Environment for Mainstreaming Climate Change</h2>
+                    <p>Enabling environment for mainstreaming climate change, through the development of capacity of the
+                        municipalities and other key local agencies to assess and understand climate risks and
+                        vulnerabilities, and accordingly mainstream climate change adaptation strategies and actions in
+                        local plans and policies, and the establishment of a multi-stakeholder platform for dialogue and
+                        cooperation on climate change adaptation at the watershed level.</p>
+                    <p><strong>With a GEF/LDCF financing of 354,893 and co-financing of USD 1,072,837, the component
+                            will focus on developing the knowledge and skills of the municipal officials, soil and
+                            watershed management officials, divisional and sub-divisional forest officials, and
+                            community-based natural resource management groups (forestry, agriculture, irrigation,
+                            livestock) for participatory assessments of climate risks and vulnerabilities, and CCA
+                            mainstreaming.</strong></p>
+                    <p>This will be achieved through a series of training and development of tools (e.g. guidelines),
+                        followed by their application for assessment of climate risks and vulnerabilities, and CCA
+                        mainstreaming which will reinforce the capacity of the training recipients whilst also providing
+                        detailed and systematic information on local climate risks and vulnerabilities. The systematic
+                        information and understanding generated by the participatory assessments of climate risks and
+                        vulnerabilities will help the municipalities and other local agencies to review local plans and
+                        assess the integration of CCA in these plans and policies. These reviews will then feed into the
+                        formulation of CCA-integration guidelines for the municipalities and sector agencies. The
+                        guidelines, in turn, will help municipalities and sector agencies to formulate or revise local
+                        plans and policies to make them responsive to climate change and its impacts.</p>
+                    <p>Under this component, the project will also strengthen coordination between multiple stakeholders
+                        of different municipalities in the Marin watershed through the establishment and
+                        operationalization of a multi-stakeholder platform. The platform will be supported by
+                        well-defined operational modality, structure and functions to ensure that it operates as an
+                        inclusive, coherent and transparent mechanism for the stakeholders to share information,
+                        exchange knowledge and views, coordinate and collaborate on climate change issues in the Marin
+                        watershed. Particular attention will be given to the inclusion of women, youth, and Indigenous
+                        people and facilitating equal opportunity to express views and aspirations, and contribute to
+                        the collaboration and decision-making process.</p>
+                </div>
+
+                <!-- Outcome and Outputs Table -->
+                <div class="section">
+                    <h2 class="section-title">Project Framework - Component 1</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                        <thead>
+                            <tr style="background-color: var(--primary-color); color: white;">
+                                <th style="padding: 1rem; text-align: left;">Project Components / Programs</th>
+                                <th style="padding: 1rem; text-align: left;">Project Outcomes</th>
+                                <th style="padding: 1rem; text-align: left;">Project Outputs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 1rem;"><strong>Component 1:</strong> Enabling environment for
+                                    mainstreaming climate change</td>
+                                <td style="padding: 1rem;"><strong>Outcome 1.1:</strong> Improved understanding,
+                                    knowledge and capacity to mainstream climate change adaptation in local plans and
+                                    policies.</td>
+                                <td style="padding: 1rem;">
+                                    <strong>Output 1.1.1:</strong> Training and exchange visits for community-based
+                                    organizations (CBOs), soil and watershed management office, division and
+                                    sub-division offices, municipalities and relevant provincial officials on climate
+                                    change impacts and risks assessment tools and methods for mainstreaming CCA in all
+                                    sectors and municipal plans in an integrated approach.<br><br>
+                                    <strong>Output 1.1.2:</strong> CCA-integration guidelines developed with communities
+                                    and municipalities to support and formulate climate-responsive policies and plans on
+                                    water, agriculture, forestry, and rural development for four municipalities in the
+                                    Marin watershed, and integrated in the watershed, forestry, and municipal planning
+                                    process.<br><br>
+                                    <strong>Output 1.1.3:</strong> Multi-stakeholder platform established in the Marin
+                                    watershed to drive the mainstreaming of adaptation in an integrated watershed
+                                    approach.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        @endif
+    </main>
+</x-layouts.frontend>

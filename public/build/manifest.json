@@ -1,0 +1,17 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-C23hT_LE.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/fonts/WWF.otf": {
+    "file": "assets/WWF-DnXbDHVg.otf",
+    "src": "resources/fonts/WWF.otf"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-Bf4POITK.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}

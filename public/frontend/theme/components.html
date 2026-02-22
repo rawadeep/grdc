@@ -1,0 +1,1544 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaWRiN Project - Managing Watersheds for Enhanced Resilience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'WWF';
+            src: url(Fonts/WWF.otf) format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        :root {
+            --primary-color: #2c7a2c;
+            --secondary-color: #4a9a4a;
+            --accent-color: #68b868;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --gradient: linear-gradient(135deg, #2c7a2c 0%, #4a9a4a 100%);
+            --dark-green: #1a4d1a;
+        }
+
+        body {
+            font-family: 'Open Sans', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        /* remove styling from a */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        /* Top Navigation */
+        .top-nav {
+            background: var(--white);
+            padding: 0.5rem 0;
+            position: relative;
+            top: 0;
+            width: 100%;
+            z-index: 1002;
+        }
+
+        .top-nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .top-nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .top-nav-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .top-nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Main Header */
+        .header {
+            background: var(--gradient);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0px; /* Below top nav */
+            width: 100%;
+            z-index: 1001;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: WWF, sans-serif;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: 0.3s;
+            z-index: 1003;
+        }
+
+        .nav-item:hover .dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .dropdown-link:hover {
+            background: var(--bg-light);
+        }
+
+        .language-dropdown, .search-dropdown {
+            position: relative;
+        }
+
+        .language-btn, .search-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.3s;
+        }
+
+        .language-btn:hover, .search-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .language-options, .search-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--white);
+            min-width: 150px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: 0.3s;
+            z-index: 1004;
+        }
+
+        .language-dropdown:hover .language-options,
+        .search-dropdown:hover .search-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .language-option:hover {
+            background: var(--bg-light);
+        }
+
+        .language-option.active {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(104,184,104,0.2);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh; /* Full viewport height minus header */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 2rem;
+            animation: fadeInUp 1s;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: WWF, sans-serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-navigation {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 3;
+        }
+
+        .hero-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .hero-dot.active {
+            background: var(--white);
+            transform: scale(1.2);
+        }
+
+        .hero-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            z-index: 3;
+            border-radius: 50%;
+        }
+
+        .hero-arrow:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .hero-arrow.prev {
+            left: 2rem;
+        }
+
+        .hero-arrow.next {
+            right: 2rem;
+        }
+
+        .cta-button {
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Sections */
+        .section {
+            padding: 4rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            position: relative;
+            font-family: WWF, sans-serif;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .paragraph {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-top: 1rem;
+        }
+        .description-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .description-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .description-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            color: var(--accent-color);
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .map-container {
+            text-align: center;
+            background: var(--bg-light);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .map-placeholder {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: row;
+        }
+        .map-placeholder img {
+            width: 100%;
+            height: auto;
+        }
+
+        .knowledge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .knowledge-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+
+        .knowledge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .knowledge-header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .knowledge-body {
+            padding: 1.5rem;
+        }
+
+        .download-btn {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: inline-block;
+            margin-top: 1rem;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            background: var(--gradient);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.1rem;
+        }
+
+        .gallery-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .gallery-placeholder img:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s;
+        }
+
+        .gallery-placeholder span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            margin-bottom: 0.5rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item i {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #34495e;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: 0.6s;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px;
+            }
+
+            .header {
+                top: 40px;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 130px;
+                left: 0;
+                width: 100%;
+                background: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .nav-menu.active {
+                transform: translateX(0);
+                left: 0;
+                top: 130px;
+            }
+            .nav-item {
+                margin: 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-arrow {
+                display: none;
+            }
+
+            .description-grid,
+            .knowledge-grid,
+            .gallery-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-dropdown {
+                order: -1;
+            }
+        }
+        .hidden {
+            display: none;
+        }
+
+        .active-section {
+            display: block;
+        }
+        .map-slider {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 800px;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .map-slide {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .map-slide.active {
+            opacity: 1;
+        }
+
+        .map-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 1rem;
+            z-index: 10;
+        }
+
+        .map-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-dot.active {
+            background: #000;
+            transform: scale(1.2);
+        }
+        /* components section styling  */
+        .component-image-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+            position: relative;
+        }
+
+        .component-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .component-img {
+            width: 100%;
+            height: 500px; /* You can adjust this value */
+            object-fit: cover; /* Crops image to fit uniformly */
+            display: block;
+            transition: transform 0.4s ease;
+            border-radius: 10px;
+        }
+
+        .component-item:hover .component-img {
+            transform: scale(1.05);
+        }
+
+        .component-title {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: rgba(44, 122, 44, 0.85); /* Matches --primary-color with transparency */
+            color: var(--white);
+            padding: 0.6rem 1rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            text-align: center;
+        }
+        /* component page css */
+        .component-overview,
+        .component-outcome,
+        .component-output,
+        .component-activities,
+        .component-gender {
+            margin-bottom: 2rem;
+        }
+
+        .component-overview h2,
+        .component-outcome h3,
+        .component-output h3,
+        .component-activities h3,
+        .component-gender h3 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 1rem;
+        }
+
+        .component-output ul,
+        .component-activities ul {
+            list-style: disc inside;
+            line-height: 1.8;
+        }
+
+        .component-output li,
+        .component-activities li {
+            margin-bottom: 0.5rem;
+        }
+
+        .component-gender p {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        /* contact link at the footer */
+        .contact-link {
+        color: white;
+        text-decoration: underline dotted;
+        text-underline-offset: 4px;
+        text-decoration-thickness: 1px;
+        font-size: 1rem;
+        border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <div class="top-nav-container">
+            <div class="logo" style="display: flex; align-items: center; width: 100%;">
+                <!-- Left Logo -->
+                <img src="img/Emblem_of_Nepal.png" alt="Nepal Logo" style="width: 85px; height: 85px; margin-right: 0.5rem;">
+
+                <!-- Logo Text -->
+                <div class="logo-text" style="font-family:'Open Sans', sans-serif; color: var(--accent-color); line-height:1.5rem;">
+                    <h6 style="color:red;">Government of Bagmati Province</h6>
+                    <h6 style="color:red;">MINISTRY OF FORESTS AND ENVIRONMENT</h6>
+                    <h5 style="color:red;">Managing Watersheds for Enhanced Resilience of Communities <br>to Climate Change in Nepal (MaWRiN) Project</h5>
+                </div>
+
+                <!-- Spacer that grows -->
+                <div style="flex-grow: 1;"></div>
+
+                <!-- Right Logos -->
+                <!-- <img src="img/flag_of_nepal.gif" alt="Nepal Flag" style="width: 60px; height: 60px; margin-right: 0.5rem;"> -->
+                <img src="img/gef-logo.png" alt="" style="width: 50px; height: auto; margin-right: 0.5rem;">
+                <img src="img/wwf-logo.jpg" alt="" style="width: 60px; height: 60px; margin-right: 0.5rem;">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="nav-container">
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="/index.html" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span data-en="Home" data-ne="गृह" data-ta="घर">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span data-en="About" data-ne="बारेमा" data-ta="बारेमा">About</span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="project-description.html" class="dropdown-link" data-en="Project Description" data-ne="परियोजना विवरण" data-ta="परियोजना विवरण">Project Description</a>
+                            <a href="objectives.html" class="dropdown-link" data-en="Objectives" data-ne="उद्देश्यहरू" data-ta="उद्देश्यहरू">Objectives</a>
+                            <a href="components.html" class="dropdown-link" data-en="Components" data-ne="घटकहरू" data-ta="घटकहरू">Components</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#about" class="nav-link">
+                            <i class="fas fa-folder"></i>
+                            <span data-en="Resources" data-ne="स्रोतहरू" data-ta="स्रोतहरू">Resources</span>
+                        </a>
+                        <div class="dropdown">
+                            <a href="case-studies.html" class="dropdown-link">Case Studies</a>
+                            <a href="reports.html" class="dropdown-link">Reports</a>
+                            <a href="data-analytics.html" class="dropdown-link">Data & Analytics</a>
+                            <a href="knowledge-products.html" class="dropdown-link">Knowledge Products</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="publications.html" class="nav-link">
+                            <i class="fas fa-file"></i>
+                            <span >Publications</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="events-notices.html" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <span >Events & Notices</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="grievance.html" class="nav-link">
+                            <i class="fas fa-pen"></i>
+                            <span data-en="Grievance" data-ne="गुनासो" data-ta="गुनासो">Grievance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item language-dropdown">
+                        <button class="language-btn" id="languageBtn">
+                            <i class="fas fa-globe"></i>
+                            <span id="currentLang">English</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="language-options" id="languageOptions">
+                            <div class="language-option active" data-lang="en">
+                                <i class="fas fa-flag"></i> English
+                            </div>
+                            <div class="language-option" data-lang="ne">
+                                <i class="fas fa-flag"></i> नेपाली
+                            </div>
+                            <div class="language-option" data-lang="ta">
+                                <i class="fas fa-flag"></i> तमाङ
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item search-dropdown">
+                        <button class="search-btn" id="searchBtn">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <div class="search-options" id="searchOptions">
+                            <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+   
+    <main>
+        <!-- Components Section -->
+        <section class="section" id="components">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Project Components</h2>
+                    <p class="section-subtitle">
+                        The MaWRiN Project is structured around three core components designed to build climate resilience through institutional strengthening, community engagement, and knowledge sharing.
+                    </p>
+                </div>
+
+                <!-- Components Grid -->
+                <div class="description-grid">
+                    <a href="component-1.html" class="description-card fade-in">
+                        <div class="card-icon"><i class="fas fa-cogs"></i></div>
+                        <h4 class="card-title">Component 1: Enabling Environment</h4>
+                        <p>This component focuses on mainstreaming climate change adaptation into local governance systems by building capacity at municipal levels and establishing multi-stakeholder platforms for coordinated action.</p>
+                    </a>
+
+                    <a href="component-2.html" class="description-card fade-in">
+                        <div class="card-icon"><i class="fas fa-leaf"></i></div>
+                        <h4 class="card-title">Component 2: Enhanced Resilience</h4>
+                        <p>This component supports communities in adopting Nature-based Solutions (NbS) such as reforestation, soil conservation, rainwater harvesting, and agroforestry to reduce climate risks and strengthen local adaptive capacities.</p>
+                    </a>
+
+                    <a href="component-3.html" class="description-card fade-in">
+                        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+                        <h4 class="card-title">Component 3: Knowledge Management</h4>
+                        <p>This component ensures continuous learning and evidence-based decision-making through monitoring, evaluation, documentation of best practices, and dissemination of lessons learned for replication across similar ecosystems.</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h3>Contact for Further Information</h3>
+                    <ul class="footer-links">
+                        <li>Project Management Unit (PMU)</li>
+                        <li>Kamalamai Municipality-6,</li>
+                        <li>Shantinagar, Sindhuli Madi</li>
+                        <li><i class="fas fa-phone"></i> +977-47-590009</li>
+                        <li><i class="fas fa-envelope"></i> mawrin.mofe@bagamati.gov.np</li>
+                        <li><i class="fas fa-clock"></i> Office Hours</li>
+                        <li>Sunday – Thursday: 10:00 AM – 5:00 PM</li>
+                        <li>Friday: 10:00 AM – 3:00 PM</li>
+                    </ul>
+                    <a href="contact.html" class="contact-link">
+                        Contact Us &#10138;
+                    </a>
+                </div>
+
+                <!-- Relevant Links
+                <div class="footer-section">
+                    <h3>Relevant Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about">About Project</a></li>
+                        <li><a href="components.html">Project Components</a></li>
+                        <li><a href="reports.html">Reports & Publications</a></li>
+                        <li><a href="gallery.html">Photo Gallery</a></li>
+                        <li><a href="grievance.html">Grievance Mechanism</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div> -->
+
+                <!-- Project Manager -->
+                <!-- Project Manager -->
+                <div class="footer-section">
+                    <h3>Project Manager</h3>
+                    <ul class="footer-links">
+                    <li style="display: flex; align-items: center; list-style: none;">
+                        <img src="img/profile-pic.jpg" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                        <div style="margin: 0;">
+                            <h5 style="margin: 0;">Mr. Suresh Dahal</h5>
+                            <p style="margin: 0; font-size: 0.9rem;">Chief, Soil and Watershed Management Office, Ramechhap</p>
+                        </div>
+                    </li>
+                    </ul>
+                    <h3>Information Officer</h3>
+                    <ul class="footer-links">
+                    <li style="display: flex; align-items: center; list-style: none;">
+                        <img src="img/profile-pic.jpg" alt="Profile Picture" style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                        <div style="margin: 0;">
+                            <h5 style="margin: 0;">Mr. Nabin Dhungana</h5>
+                            <p style="margin: 0; font-size: 0.9rem;">Technical Team Leader, MaWRiN Project Sindhuli</p>
+                        </div>
+                    </li>
+                    </ul>
+                </div>
+              <!-- Partners -->
+                <div class="footer-section">
+                    <h3>Relevant Links</h3>
+                    <ul class="footer-links">
+                 
+                        <li>
+                            <a href="https://mofe.gov.np"  target="_blank" rel="noopener noreferrer">
+                                Ministry of Forests and Environment (MoFE), Kathmandu
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://bagmati.gov.np/environment-forest"  target="_blank" rel="noopener noreferrer">
+                                Ministry of Forests and Environment (MoFE), Bagamati Province, Hetauda
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://ramechhapmun.gov.np/"  target="_blank" rel="noopener noreferrer">
+                                Soil and Watershed Management Office (SWMO), Ramechhap
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.worldwildlife.org"  target="_blank" rel="noopener noreferrer">
+                                World Wildlife Fund, Inc.
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://wwfnepal.org"  target="_blank" rel="noopener noreferrer">
+                                WWF Nepal Country Office
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; 2025 MaWRiN Project. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================================
+        // HERO SLIDER IMPLEMENTATION
+        // ============================================================================
+
+        class HeroSlider {
+            constructor() {
+                this.slides = document.querySelectorAll('.hero-slide');
+                this.dots = document.querySelectorAll('.hero-dot');
+                this.prevBtn = document.getElementById('prevSlide');
+                this.nextBtn = document.getElementById('nextSlide');
+                this.currentSlide = 0;
+                this.slideInterval = null;
+                this.autoPlayDelay = 5000; // 5 seconds
+                
+                this.init();
+            }
+            
+            init() {
+                if (this.slides.length === 0) return;
+                
+                // Add event listeners
+                this.prevBtn?.addEventListener('click', () => this.prevSlide());
+                this.nextBtn?.addEventListener('click', () => this.nextSlide());
+                
+                // Add dot navigation
+                this.dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                });
+                
+                // Start autoplay
+                this.startAutoPlay();
+                
+                // Pause on hover
+                const heroSection = document.querySelector('.hero');
+                heroSection?.addEventListener('mouseenter', () => this.stopAutoPlay());
+                heroSection?.addEventListener('mouseleave', () => this.startAutoPlay());
+                
+                // Handle keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') this.prevSlide();
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                });
+                
+                // Touch/swipe support
+                this.addTouchSupport();
+            }
+            
+            goToSlide(index) {
+                // Remove active class from current slide and dot
+                this.slides[this.currentSlide]?.classList.remove('active');
+                this.dots[this.currentSlide]?.classList.remove('active');
+                
+                // Update current slide index
+                this.currentSlide = index;
+                
+                // Add active class to new slide and dot
+                this.slides[this.currentSlide]?.classList.add('active');
+                this.dots[this.currentSlide]?.classList.add('active');
+                
+                // Restart autoplay
+                this.restartAutoPlay();
+            }
+            
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.slides.length;
+                this.goToSlide(nextIndex);
+            }
+            
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+                this.goToSlide(prevIndex);
+            }
+            
+            startAutoPlay() {
+                this.slideInterval = setInterval(() => {
+                    this.nextSlide();
+                }, this.autoPlayDelay);
+            }
+            
+            stopAutoPlay() {
+                if (this.slideInterval) {
+                    clearInterval(this.slideInterval);
+                    this.slideInterval = null;
+                }
+            }
+            
+            restartAutoPlay() {
+                this.stopAutoPlay();
+                this.startAutoPlay();
+            }
+            
+            addTouchSupport() {
+                let startX = 0;
+                let endX = 0;
+                const heroSection = document.querySelector('.hero');
+                
+                if (!heroSection) return;
+                
+                heroSection.addEventListener('touchstart', (e) => {
+                    startX = e.touches[0].clientX;
+                }, { passive: true });
+                
+                heroSection.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].clientX;
+                    this.handleSwipe();
+                }, { passive: true });
+                
+                heroSection.addEventListener('touchmove', (e) => {
+                    // Prevent default to avoid scrolling while swiping
+                    if (Math.abs(e.touches[0].clientX - startX) > 10) {
+                        e.preventDefault();
+                    }
+                });
+            }
+            
+            handleSwipe() {
+                const swipeThreshold = 50;
+                const swipeDistance = endX - startX;
+                
+                if (Math.abs(swipeDistance) > swipeThreshold) {
+                    if (swipeDistance > 0) {
+                        this.prevSlide(); // Swipe right - go to previous
+                    } else {
+                        this.nextSlide(); // Swipe left - go to next
+                    }
+                }
+            }
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade In Animation on Scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const searchResults = document.getElementById('searchResults');
+        const resultsList = document.getElementById('resultsList');
+
+        // Sample search data
+        const searchData = [
+            { title: 'Project Progress Report Q1 2025', type: 'Report', description: 'Quarterly progress update on project activities and milestones.' },
+            { title: 'Climate Vulnerability Assessment', type: 'Publication', description: 'Comprehensive assessment of climate vulnerabilities in the project area.' },
+            { title: 'Community Engagement Guidelines', type: 'Resource', description: 'Best practices for engaging with local and indigenous communities.' },
+            { title: 'Watershed Management Toolkit', type: 'Resource', description: 'Technical toolkit for watershed management and restoration activities.' },
+            { title: 'Monitoring and Evaluation Framework', type: 'Report', description: 'Framework for tracking project progress and impact measurement.' }
+        ];
+
+        function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = searchData.filter(item => 
+                item.title.toLowerCase().includes(query) || 
+                item.description.toLowerCase().includes(query) ||
+                item.type.toLowerCase().includes(query)
+            );
+
+            if (results.length > 0) {
+                resultsList.innerHTML = results.map(result => `
+                    <div class="knowledge-card" style="margin-bottom: 1rem;">
+                        <div class="knowledge-body">
+                            <h4 style="color: var(--primary-color); margin-bottom: 0.5rem;">${result.title}</h4>
+                            <p style="color: var(--accent-color); font-size: 0.9rem; margin-bottom: 0.5rem;">${result.type}</p>
+                            <p style="margin-bottom: 1rem;">${result.description}</p>
+                            <a href="#" class="download-btn">
+                                <i class="fas fa-download"></i>
+                                Access Resource
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+                searchResults.style.display = 'block';
+            } else {
+                resultsList.innerHTML = '<p style="text-align: center; color: var(--text-light);">No results found. Try different keywords.</p>';
+                searchResults.style.display = 'block';
+            }
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        // Contact Form Handling
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simple form validation and submission simulation
+            const formData = new FormData(contactForm);
+            
+            // Show success message (in real implementation, this would send data to server)
+            alert('Thank you for your message! We will get back to you within 2 business days.');
+            contactForm.reset();
+        });
+
+        // Gallery Item Click Handler
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // In a real implementation, this would open a modal or full-size image
+                alert('Gallery image viewer would open here');
+            });
+        });
+
+        // Dynamic Content Loading Simulation
+        function loadDynamicContent() {
+            // Simulate loading of dynamic content like latest reports, events, etc.
+            // In real implementation, this would fetch data from a backend API
+            console.log('Dynamic content loaded');
+        }
+
+        // Initialize dynamic content on page load
+        document.addEventListener('DOMContentLoaded', loadDynamicContent);
+
+        // Auto-hide mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-container')) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Performance optimization: Lazy load images when implemented
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            // Apply to future image elements with data-src attribute
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+        class MapSlider {
+            constructor() {
+                this.slides = document.querySelectorAll('.map-slide');
+                this.dots = document.querySelectorAll('.map-dot');
+                this.currentSlide = 0;
+                this.init();
+            }
+
+            init() {
+                if (this.slides.length === 0) return;
+
+                // Add dot click listeners
+                this.dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.goToSlide(index));
+                });
+
+                // Auto slide every 6 seconds
+                this.startAutoPlay();
+            }
+
+            goToSlide(index) {
+                // Remove active from current
+                this.slides[this.currentSlide]?.classList.remove('active');
+                this.dots[this.currentSlide]?.classList.remove('active');
+
+                // Set new slide
+                this.currentSlide = index;
+
+                // Add active to new
+                this.slides[this.currentSlide]?.classList.add('active');
+                this.dots[this.currentSlide]?.classList.add('active');
+            }
+
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.slides.length;
+                this.goToSlide(nextIndex);
+            }
+
+            startAutoPlay() {
+                setInterval(() => {
+                    this.nextSlide();
+                }, 6000); // Change every 6 seconds
+            }
+        }
+
+        // Initialize sliders and mobile navigation on DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new HeroSlider(); // Slider init
+            new MapSlider(); // Map slider init
+
+            // Mobile Navigation Toggle
+            const mobileToggle = document.getElementById('mobileToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (mobileToggle && navMenu) {
+                mobileToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active');
+                });
+
+                // Optional: Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.nav-container') && navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

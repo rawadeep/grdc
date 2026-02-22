@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MaWRiN Project - Photo Gallery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"  />
+  <style>
+    :root {
+      --primary-color: #2c7a2c;
+      --secondary-color: #4a9a4a;
+      --accent-color: #68b868;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --bg-light: #f8f9fa;
+      --white: #ffffff;
+      --shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+    }
+
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--primary-color);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .gallery-item:hover .gallery-img {
+      transform: scale(1.1);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-content img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-color);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s ease;
+    }
+
+    .close-btn:hover {
+      background: var(--primary-color);
+    }
+
+    /* Navigation Arrows */
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--white);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 10;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      opacity: 1;
+    }
+
+    .prev-btn {
+      left: 1rem;
+    }
+
+    .next-btn {
+      right: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="section">
+    <h2 class="section-title">Photo Gallery</h2>
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- Sample Gallery Items -->
+      <div class="gallery-item" data-src="img/gallery1.jpg" data-caption="Community Training on Climate Risks">
+        <img src="img/1.jpg" alt="Gallery Image 1" class="gallery-img" />
+      </div>
+      <div class="gallery-item" data-src="img/gallery2.jpg" data-caption="Nature-based Solutions in Action">
+        <img src="img/2.jpg" alt="Gallery Image 2" class="gallery-img" />
+      </div>
+      <div class="gallery-item" data-src="img/gallery3.jpg" data-caption="Youth Engagement in Watershed Management">
+        <img src="img/3.jpg" alt="Gallery Image 3" class="gallery-img" />
+      </div>
+      <div class="gallery-item" data-src="img/gallery4.jpg" data-caption="Multi-Stakeholder Platform Meeting">
+        <img src="img/4.jpg" alt="Gallery Image 4" class="gallery-img" />
+      </div>
+      <div class="gallery-item" data-src="img/gallery5.jpg" data-caption="Reforestation Efforts in Degraded Areas">
+        <img src="img/5.jpg" alt="Gallery Image 5" class="gallery-img" />
+      </div>
+      <div class="gallery-item" data-src="img/gallery6.jpg" data-caption="Rainwater Harvesting Demonstration">
+        <img src="img/6.jpg" alt="Gallery Image 6" class="gallery-img" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Viewer -->
+  <div class="modal" id="imageModal">
+    <button class="close-btn" id="closeBtn">&times;</button>
+    <button class="nav-btn prev-btn" id="prevBtn">&#8592;</button>
+    <img id="modalImage" src="" alt="Full Size Image" class="modal-content" />
+    <button class="nav-btn next-btn" id="nextBtn">&#8594;</button>
+  </div>
+
+  <script>
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    const closeBtn = document.getElementById('closeBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+
+    let currentIndex = 0;
+    let imageSources = [];
+
+    // Initialize gallery data
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        currentIndex = index;
+        imageSources = Array.from(galleryItems).map(i => i.dataset.src);
+        modalImg.src = imageSources[currentIndex];
+        modal.classList.add('active');
+      });
+    });
+
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    // Next image
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % imageSources.length;
+      modalImg.src = imageSources[currentIndex];
+    });
+
+    // Previous image
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + imageSources.length) % imageSources.length;
+      modalImg.src = imageSources[currentIndex];
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!modal.classList.contains('active')) return;
+
+      if (e.key === 'ArrowRight') {
+        nextBtn.click();
+      } else if (e.key === 'ArrowLeft') {
+        prevBtn.click();
+      } else if (e.key === 'Escape') {
+        closeBtn.click();
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    modalImg.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    modalImg.addEventListener('touchend', e => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const swipeDistance = touchEndX - touchStartX;
+
+      if (Math.abs(swipeDistance) > swipeThreshold) {
+        if (swipeDistance > 0) {
+          prevBtn.click(); // Swipe right → previous
+        } else {
+          nextBtn.click(); // Swipe left → next
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
