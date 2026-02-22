@@ -150,6 +150,63 @@
                 });
             });
         }
+
+        const slider = document.getElementById('home-slider');
+        if (slider) {
+            const slides = Array.from(slider.querySelectorAll('.slide'));
+            const dots = Array.from(slider.querySelectorAll('.dot'));
+            const prevBtn = slider.querySelector('[data-dir="prev"]');
+            const nextBtn = slider.querySelector('[data-dir="next"]');
+            let index = 0;
+            let intervalId = null;
+
+            const renderSlide = function (nextIndex) {
+                index = (nextIndex + slides.length) % slides.length;
+                slides.forEach(function (slide, i) {
+                    slide.classList.toggle('active', i === index);
+                });
+                dots.forEach(function (dot, i) {
+                    dot.classList.toggle('active', i === index);
+                });
+            };
+
+            const startAuto = function () {
+                intervalId = setInterval(function () {
+                    renderSlide(index + 1);
+                }, 6000);
+            };
+
+            const resetAuto = function () {
+                if (intervalId) {
+                    clearInterval(intervalId);
+                }
+                startAuto();
+            };
+
+            if (prevBtn) {
+                prevBtn.addEventListener('click', function () {
+                    renderSlide(index - 1);
+                    resetAuto();
+                });
+            }
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function () {
+                    renderSlide(index + 1);
+                    resetAuto();
+                });
+            }
+            dots.forEach(function (dot) {
+                dot.addEventListener('click', function () {
+                    const target = parseInt(dot.getAttribute('data-slide'), 10);
+                    if (Number.isInteger(target)) {
+                        renderSlide(target);
+                        resetAuto();
+                    }
+                });
+            });
+
+            startAuto();
+        }
     </script>
 </body>
 </html>
