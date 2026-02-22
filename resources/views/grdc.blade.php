@@ -76,7 +76,7 @@
                     <nav class="nav-menu" id="nav-menu">
                         <a href="/" class="{{ $currentKey === 'home' ? 'active' : '' }}">Home</a>
                         @foreach ($menu as $item)
-                            <div class="nav-item">
+                            <div class="nav-item {{ isset($item['children']) ? 'has-children' : '' }}">
                                 @if (!isset($item['children']))
                                     <a href="{{ $item['path'] }}" class="{{ request()->is(ltrim($item['path'], '/')) ? 'active' : '' }}">{{ $item['label'] }}</a>
                                 @else
@@ -115,9 +115,39 @@
     <script>
         const toggle = document.getElementById('nav-toggle');
         const menu = document.getElementById('nav-menu');
+        const mobileQuery = window.matchMedia('(max-width: 860px)');
+
+        if (menu) {
+            menu.classList.remove('show');
+            menu.querySelectorAll('.nav-item.open').forEach(function (item) {
+                item.classList.remove('open');
+            });
+        }
+
         if (toggle && menu) {
             toggle.addEventListener('click', function () {
                 menu.classList.toggle('show');
+            });
+        }
+
+        if (menu) {
+            const parentItems = menu.querySelectorAll('.nav-item.has-children > a');
+            parentItems.forEach(function (link) {
+                link.addEventListener('click', function (event) {
+                    if (!mobileQuery.matches) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    const item = link.parentElement;
+                    const willOpen = !item.classList.contains('open');
+                    menu.querySelectorAll('.nav-item.open').forEach(function (openItem) {
+                        openItem.classList.remove('open');
+                    });
+                    if (willOpen) {
+                        item.classList.add('open');
+                    }
+                });
             });
         }
     </script>
