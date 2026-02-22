@@ -52,7 +52,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Green Research & Development Center (GRDC)">
     <title>GRDC | Green Research & Development Center</title>
-    <link rel="stylesheet" href="{{ asset('assets/grdc.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/grdc.css') }}?v={{ filemtime(public_path('assets/grdc.css')) }}">
 </head>
 <body>
     <div class="site-shell">
